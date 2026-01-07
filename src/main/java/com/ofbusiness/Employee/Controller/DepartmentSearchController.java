@@ -19,8 +19,8 @@ public class DepartmentSearchController {
 
     @GetMapping("/name/{q}")
     public List<DepartmentDocument> searchDepartmentByName(@PathVariable String q) {
-//        return searchService.searchByNameFuzzy(q);
-        System.out.println("this is q "+q);
+
+//        System.out.println("this is q "+q);
         return searchService.searchByName(q);
     }
 

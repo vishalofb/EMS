@@ -15,24 +15,23 @@ public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
 
-    // CREATE EMPLOYEE
     @PostMapping("/create")
     public EmployeeResponse createEmployee(@RequestBody EmployeeRequest request) {
         return employeeService.createEmployee(request);
     }
 
-    // GET EMPLOYEE BY ID
-    @GetMapping("id/{eid}")
+
+    @GetMapping("/eid/{eid}")
     public EmployeeResponse getEmployeeById(@PathVariable Long eid) {
         return employeeService.getEmployeeById(eid);
     }
 
-    @GetMapping("did/{did}")
+    @GetMapping("/{did}")
     public List<EmployeeResponse> getEmployeeByDid(@PathVariable Long did) {
         return employeeService.getEmployeesByDid(did);
     }
 
-    @GetMapping("/dname/{dname}")
+    @GetMapping("/{dname}")
     public List<EmployeeResponse> getEmployeesByDepartmentName(
             @PathVariable String dname) {
 

@@ -16,22 +16,22 @@ public class DepartmentController {
     @Autowired
     private DepartmentService departmentService;
 
-    // CREATE
-    @PostMapping("/post-department")
+
+    @PostMapping("/post")
     public DepartmentResponse createDepartment(
             @RequestBody DepartmentRequest request) {
 
         return departmentService.createDepartment(request);
     }
 
-    // GET ALL
-    @GetMapping("/get-departments")
+
+    @GetMapping("/get")
     public List<DepartmentResponse> getAllDepartments() {
         return departmentService.getAllDepartments();
     }
 
-    // GET BY ID
-    @GetMapping("/get-departments/{id}")
+
+    @GetMapping("/{id}")
     public DepartmentResponse getDepartmentById(@PathVariable Long id) {
         return departmentService.getDepartmentById(id);
     }

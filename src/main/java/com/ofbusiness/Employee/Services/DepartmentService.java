@@ -82,7 +82,7 @@ public class DepartmentService {
     // Entity → DTO
     private DepartmentResponse mapToResponse(Department dept) {
         DepartmentResponse response = new DepartmentResponse();
-        response.setDid(dept.getDid()); // generated ID comes from DB
+        response.setId(dept.getDid()); // generated ID comes from DB
         response.setDname(dept.getDname());
         return response;
     }

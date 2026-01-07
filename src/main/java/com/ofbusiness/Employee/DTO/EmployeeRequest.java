@@ -6,7 +6,6 @@ public class EmployeeRequest {
     private String email;
     private Long did;
 
-    // getters & setters
     public String getEname() {
         return ename;
     }

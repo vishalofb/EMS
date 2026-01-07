@@ -19,12 +19,14 @@ public class EmployeeSearchService {
         public List<EmployeeDocument> searchByNameFuzzy(String name) {
 
                 NativeQuery query = NativeQuery.builder()
-                                .withQuery(q -> q
-                                                .match(m -> m
-                                                                .field("ename")
-                                                                .query(name)
-                                                                .fuzziness("AUTO")))
-                                .build();
+                        .withQuery(q -> q
+                                .bool(b -> b
+                                        .should(s -> s.match(m -> m.field("ename").query(name)))
+                                        .should(s -> s.wildcard(w -> w.field("ename").value("*" + name.toLowerCase() + "*")))
+                                        .minimumShouldMatch("1")
+                                )
+                        )
+                        .build();
 
                 SearchHits<EmployeeDocument> hits = elasticsearchOperations.search(query, EmployeeDocument.class);
 

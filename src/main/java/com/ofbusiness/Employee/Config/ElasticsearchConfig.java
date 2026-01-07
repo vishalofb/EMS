@@ -29,29 +29,33 @@ public class ElasticsearchConfig extends ElasticsearchConfiguration {
     public ClientConfiguration clientConfiguration() {
 
         String host = uris.replace("https://", "").replace("http://", "");
+        boolean useSSL = uris.startsWith("https://");
 
-        TrustManager[] trustAllCerts = new TrustManager[]{
-                new X509TrustManager() {
-                    public X509Certificate[] getAcceptedIssuers() { return null; }
-                    public void checkClientTrusted(X509Certificate[] certs, String authType) {}
-                    public void checkServerTrusted(X509Certificate[] certs, String authType) {}
-                }
-        };
+        ClientConfiguration.MaybeSecureClientConfigurationBuilder builder = ClientConfiguration.builder()
+                .connectedTo(host);
 
-        try {
-            SSLContext sslContext = SSLContext.getInstance("TLS");
-            sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
+        if (useSSL) {
+            TrustManager[] trustAllCerts = new TrustManager[]{
+                    new X509TrustManager() {
+                        public X509Certificate[] getAcceptedIssuers() { return null; }
+                        public void checkClientTrusted(X509Certificate[] certs, String authType) {}
+                        public void checkServerTrusted(X509Certificate[] certs, String authType) {}
+                    }
+            };
 
-            return ClientConfiguration.builder()
-                    .connectedTo(host)
-                    .usingSsl(sslContext)
-                    .withBasicAuth(username, password)
-                    .withConnectTimeout(Duration.ofSeconds(5))
-                    .withSocketTimeout(Duration.ofSeconds(30))
-                    .build();
-
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+            try {
+                SSLContext sslContext = SSLContext.getInstance("TLS");
+                sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
+                builder.usingSsl(sslContext);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         }
+
+        return builder
+                .withBasicAuth(username, password)
+                .withConnectTimeout(Duration.ofSeconds(5))
+                .withSocketTimeout(Duration.ofSeconds(30))
+                .build();
     }
 }

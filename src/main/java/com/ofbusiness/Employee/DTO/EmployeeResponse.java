@@ -11,7 +11,7 @@ public class EmployeeResponse implements Serializable {
     private String email;
     private Long did;
 
-    // getters & setters
+
     public Long getEid() {
         return eid;
     }

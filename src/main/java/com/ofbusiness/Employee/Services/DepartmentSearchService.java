@@ -23,7 +23,13 @@ public class DepartmentSearchService {
     // 🔍 Department name search
     public List<DepartmentDocument> searchByName(String name) {
 
-        NativeQuery query = NativeQuery.builder().withQuery(q -> q.match(m -> m.field("dname").query(name))).build();
+        NativeQuery query = NativeQuery.builder()
+                .withQuery(q -> q
+                        .bool(b -> b
+                                .should(s -> s.match(m -> m.field("dname").query(name)))
+                                .should(s -> s.wildcard(w -> w.field("dname").value("*" + name.toLowerCase() + "*")))
+                                .minimumShouldMatch("1")))
+                .build();
 
         SearchHits<DepartmentDocument> hits = elasticsearchOperations.search(query, DepartmentDocument.class);
 
@@ -33,7 +39,13 @@ public class DepartmentSearchService {
     // 🔍 Employees by department name
     public List<EmployeeResponse> searchEmployeesByDepartmentName(String deptName) {
 
-        NativeQuery query = NativeQuery.builder().withQuery(q -> q.match(m -> m.field("dname").query(deptName))).build();
+        NativeQuery query = NativeQuery.builder()
+                .withQuery(q -> q
+                        .bool(b -> b
+                                .should(s -> s.match(m -> m.field("dname").query(deptName)))
+                                .should(s -> s.wildcard(w -> w.field("dname").value("*" + deptName.toLowerCase() + "*")))
+                                .minimumShouldMatch("1")))
+                .build();
 
         SearchHits<DepartmentDocument> hits = elasticsearchOperations.search(query, DepartmentDocument.class);
 

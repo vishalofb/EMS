@@ -6,15 +6,15 @@ public class DepartmentResponse implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Long did;
+    private Long id;
     private String dname;
 
-    public Long getDid() {
-        return did;
+    public Long getId() {
+        return id;
     }
 
-    public void setDid(Long did) {
-        this.did = did;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getDname() {

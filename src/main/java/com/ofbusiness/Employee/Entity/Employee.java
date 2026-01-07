@@ -20,7 +20,7 @@ public class Employee {
     @JoinColumn(name = "did", nullable = false)
     private Department department;
 
-    // getters & setters
+
     public Long getEid() {
         return eid;
     }

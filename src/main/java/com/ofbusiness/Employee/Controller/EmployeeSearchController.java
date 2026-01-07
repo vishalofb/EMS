@@ -28,7 +28,7 @@ public class EmployeeSearchController {
 
     @GetMapping("/dname/{q}")
     public List<EmployeeResponse> searchEmployeesByDepartmentName(@PathVariable String q) {
-        System.out.println("tis is q "+q);
+//        System.out.println("tis is q "+q);
         return departmentSearchService.searchEmployeesByDepartmentName(q);
     }
 
