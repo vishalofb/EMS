@@ -4,12 +4,11 @@ import java.io.Serializable;
 
 public class EmployeeResponse implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-
     private Long eid;
     private String ename;
     private String email;
     private Long did;
+    private String dname;
 
 
     public Long getEid() {
@@ -43,4 +42,8 @@ public class EmployeeResponse implements Serializable {
     public void setDid(Long did) {
         this.did = did;
     }
+
+    public void setDname(String dname){this.dname = dname;}
+
+    public  String getDname(){return dname;}
 }

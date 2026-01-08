@@ -23,7 +23,7 @@ public class EmployeeSearchController {
     public List<EmployeeDocument> searchEmployeeByName(
             @PathVariable String q) {
 
-        return searchService.searchByNameFuzzy(q);
+        return searchService.searchByName(q);
     }
 
     @GetMapping("/dname/{q}")

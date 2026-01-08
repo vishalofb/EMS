@@ -16,7 +16,7 @@ public class EmployeeSearchService {
         @Autowired
         private ElasticsearchOperations elasticsearchOperations;
 
-        public List<EmployeeDocument> searchByNameFuzzy(String name) {
+        public List<EmployeeDocument> searchByName(String name) {
 
                 NativeQuery query = NativeQuery.builder()
                         .withQuery(q -> q

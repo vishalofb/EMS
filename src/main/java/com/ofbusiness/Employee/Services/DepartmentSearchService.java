@@ -2,6 +2,7 @@ package com.ofbusiness.Employee.Services;
 
 import com.ofbusiness.Employee.DTO.EmployeeResponse;
 import com.ofbusiness.Employee.Search.DepartmentDocument;
+import com.ofbusiness.Employee.Search.EmployeeDocument;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.elasticsearch.client.elc.NativeQuery;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
@@ -44,16 +45,36 @@ public class DepartmentSearchService {
                         .bool(b -> b
                                 .should(s -> s.match(m -> m.field("dname").query(deptName)))
                                 .should(s -> s.wildcard(w -> w.field("dname").value("*" + deptName.toLowerCase() + "*")))
-                                .minimumShouldMatch("1")))
+                                .minimumShouldMatch("1")
+                        )
+                )
                 .build();
 
-        SearchHits<DepartmentDocument> hits = elasticsearchOperations.search(query, DepartmentDocument.class);
+        SearchHits<EmployeeDocument> hits =
+                elasticsearchOperations.search(query, EmployeeDocument.class);
 
         if (hits.isEmpty()) {
             return List.of();
         }
 
-        Long did = Long.valueOf(hits.getSearchHit(0).getContent().getId());
-        return employeeService.getEmployeesByDid(did);
+        return hits.getSearchHits()
+                .stream()
+                .map(hit -> mapToEmployeeResponse(hit.getContent()))
+                .toList();
     }
+
+
+    private EmployeeResponse mapToEmployeeResponse(EmployeeDocument doc) {
+
+        EmployeeResponse response = new EmployeeResponse();
+        response.setEid(Long.valueOf(doc.getId()));
+        response.setEname(doc.getEname());
+        response.setEmail(doc.getEmail());
+        response.setDname(doc.getDname());
+
+        return response;
+    }
+
+
+
 }
